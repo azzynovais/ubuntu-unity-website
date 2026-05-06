@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Ubuntu Unity</title>
+<meta name="description" content="News, updates, and stories from the Ubuntu Unity project.">
+<link rel="icon" href="images/logo.webp" type="image/webp">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== FLOATING NAVBAR ===== -->
+<nav class="nav" id="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav-brand" aria-label="Ubuntu Unity Home" id="navBrand">
+    <img src="images/logo.webp" alt="Ubuntu Unity Logo" class="nav-logo">
+    <span>Ubuntu Unity</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#features">Features</a></li>
+    <li><a href="index.html#desktops">Desktops</a></li>
+    <li><a href="index.html#download">Download</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">&#9790;</button>
+    <button class="mobile-btn" id="mobileBtn" aria-label="Menu">&#9776;</button>
+  </div>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+  <a href="index.html" onclick="closeMob()">Home</a>
+  <a href="index.html#about" onclick="closeMob()">About</a>
+  <a href="index.html#features" onclick="closeMob()">Features</a>
+  <a href="index.html#desktops" onclick="closeMob()">Desktops</a>
+  <a href="index.html#download" onclick="closeMob()">Download</a>
+</div>
+
+<!-- ===== BLOG PAGE ===== -->
+<main class="blog-page">
+  <div class="blog-hero">
+    <a href="index.html" class="blog-back">&larr; Back to Home</a>
+    <h1>Blog</h1>
+    <p>News, release notes, and stories from the Ubuntu Unity project.</p>
+  </div>
+
+  <div class="blog-grid">
+
+    <article class="blog-card reveal">
+      <div class="blog-date">April 2026</div>
+      <h3>Ubuntu Unity 26.04 "Resolute" Released</h3>
+      <p>The Ubuntu Unity team is proud to announce the release of Ubuntu Unity 26.04, codenamed "Resolute." This release brings refreshed artwork, improved HiDPI support, and the latest Unity7 refinements on a modern Ubuntu 26.04 base. Treated as Community LTS with 3 years of support from the Ubuntu Unity team, Resolute continues our mission of keeping the classic Unity desktop alive and thriving on modern hardware.</p>
+      <span class="read-more">Read more &rarr;</span>
+    </article>
+
+    <article class="blog-card reveal">
+      <div class="blog-date">April 2024</div>
+      <h3>Ubuntu Unity 24.04 LTS "Noble Numbat" Ships</h3>
+      <p>Ubuntu Unity 24.04 LTS is here — the latest official LTS release built on the rock-solid Ubuntu 24.04 base. With 5 years of official Canonical support until 2029, this is the recommended release for production use. Noble Numbat includes continued Unity7 maintenance, updated packages, and stability improvements across the desktop stack.</p>
+      <span class="read-more">Read more &rarr;</span>
+    </article>
+
+    <article class="blog-card reveal">
+      <div class="blog-date">October 2022</div>
+      <h3>Ubuntu Unity Becomes an Official Ubuntu Flavor</h3>
+      <p>A historic milestone for the project: Ubuntu Unity has been accepted as an official Ubuntu flavor, starting with the 22.10 (Kinetic Kudu) release. After years of community-driven development led by Rudra Saraswat, the project now ships on Ubuntu's official cdimage servers, benefits from Ubuntu's QA infrastructure, and is recognized by the Ubuntu Technical Board alongside flavors like Kubuntu, Xubuntu, and Lubuntu.</p>
+      <span class="read-more">Read more &rarr;</span>
+    </article>
+
+    <article class="blog-card reveal">
+      <div class="blog-date">2020</div>
+      <h3>The Community Revival</h3>
+      <p>What started as one teenager's passion project grew into a thriving community effort. Rudra Saraswat's Ubuntu Unity remix attracted contributors, testers, and users who refused to let Unity die. Through 2020, the project gained momentum with regular releases, growing community engagement, and the vision of one day becoming an official Ubuntu flavor — a dream that would become reality in 2022.</p>
+      <span class="read-more">Read more &rarr;</span>
+    </article>
+
+    <article class="blog-card reveal">
+      <div class="blog-date">2020</div>
+      <h3>Unity8 Rebranded as Lomiri by UBports</h3>
+      <p>In a parallel effort to keep the Unity ecosystem alive, UBports — the community maintaining Ubuntu Touch — rebranded Unity8 as Lomiri in 2020. This move reflected the shell's independent evolution away from the Ubuntu project and Canonical. Lomiri continues to serve as the desktop environment for Ubuntu Touch on phones and tablets, while Ubuntu Unity focuses on the classic Unity7 desktop for PCs and laptops.</p>
+      <span class="read-more">Read more &rarr;</span>
+    </article>
+
+    <article class="blog-card reveal">
+      <div class="blog-date">April 2017</div>
+      <h3>Canonical Discontinues Unity — UBports Steps Up</h3>
+      <p>In April 2017, Canonical announced the end of Unity development and the switch to GNOME 3 for future Ubuntu releases. The same year, UBports took over maintenance of Ubuntu Touch and Unity8, ensuring the mobile vision would continue. On the desktop side, Rudra Saraswat began what would become the Ubuntu Unity remix, starting a journey that would eventually lead to official flavor status.</p>
+      <span class="read-more">Read more &rarr;</span>
+    </article>
+
+  </div>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<div style="max-width:1140px;margin:0 auto;padding:0 24px 24px">
+<div class="footer-float">
+  <p>Ubuntu Unity is an official Ubuntu flavor. Ubuntu and Canonical are registered trademarks of Canonical Ltd.</p>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="https://gitlab.com/ubuntu-unity" target="_blank" rel="noopener">GitLab</a>
+    <a href="https://launchpad.net/ubuntu/+source/ubuntu-unity-meta" target="_blank" rel="noopener">Launchpad</a>
+    <a href="index.html#download">Downloads</a>
+    <a href="index.html#faq">FAQ</a>
+    <a href="index.html#support">Support</a>
+  </div>
+</div>
+</div>
+
+<button class="btt" id="btt" aria-label="Back to top">&#8593;</button>
+<canvas class="confetti-canvas" id="confettiCanvas"></canvas>
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

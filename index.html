@@ -3,357 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ubuntu Unity</title>
-<style>
-/* ========== RESET & VARIABLES ========== */
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --purple:#77216F;--purple-dark:#5E1757;--purple-light:#9242C4;--purple-glow:#AD5EBF;
-  --aubergine:#2C001E;--orange:#E95420;--orange-dark:#C7441A;
-  --bg:#FAFAFA;--bg2:#F2F0F4;--surface:#FFFFFF;--surface-hover:#F8F4F8;
-  --nav-bg:rgba(255,255,255,0.72);--hero-bg:linear-gradient(160deg,#77216F 0%,#4A0E44 35%,#2C001E 70%,#1a0012 100%);
-  --text:#1A1A1A;--text2:#444;--text-muted:#888;--text-on-dark:#fff;
-  --border:rgba(119,33,111,0.1);--border-strong:rgba(119,33,111,0.22);
-  --shadow:0 2px 8px rgba(0,0,0,0.06),0 8px 24px rgba(0,0,0,0.04);
-  --shadow-float:0 8px 32px rgba(119,33,111,0.1),0 2px 8px rgba(0,0,0,0.04);
-  --shadow-glow:0 0 40px rgba(119,33,111,0.15);
-  --code-bg:#F0ECF0;--tag-bg:rgba(119,33,111,0.07);--tag-text:#77216F;
-  --glass:saturate(180%) blur(20px);--glass-border:rgba(255,255,255,0.3);
-  --radius:20px;--radius-sm:12px;
-}
-[data-theme="dark"]{
-  --bg:#1A1A1A;--bg2:#222;--surface:#2A2A2A;--surface-hover:#332A33;
-  --nav-bg:rgba(26,26,26,0.78);
-  --text:#F0F0F0;--text2:#B0B0B0;--text-muted:#777;
-  --border:rgba(173,94,191,0.12);--border-strong:rgba(173,94,191,0.25);
-  --shadow:0 2px 8px rgba(0,0,0,0.2),0 8px 24px rgba(0,0,0,0.15);
-  --shadow-float:0 8px 32px rgba(0,0,0,0.3),0 2px 8px rgba(0,0,0,0.15);
-  --shadow-glow:0 0 50px rgba(119,33,111,0.2);
-  --code-bg:#3A2A3A;--tag-bg:rgba(173,94,191,0.1);--tag-text:#AD5EBF;
-  --glass-border:rgba(255,255,255,0.08);
-}
-html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--purple-glow) transparent}
-body{
-  font-family:'Ubuntu',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,sans-serif;
-  background:var(--bg);color:var(--text);line-height:1.7;
-  transition:background .35s,color .35s;-webkit-font-smoothing:antialiased;overflow-x:hidden;
-}
-h1,h2,h3,h4{font-weight:500;line-height:1.2;color:var(--text)}
-h1{font-size:clamp(2.4rem,6vw,4rem)}
-h2{font-size:clamp(1.8rem,4vw,2.8rem)}
-h3{font-size:clamp(1.1rem,2.2vw,1.35rem)}
-p{color:var(--text2);max-width:66ch}
-a{color:var(--purple-light);text-decoration:none;transition:color .2s}
-a:hover{color:var(--purple-glow)}
-::selection{background:rgba(119,33,111,0.18)}
-
-/* ========== FLOATING NAV ========== */
-.nav{
-  position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:100;
-  width:calc(100% - 32px);max-width:960px;
-  background:var(--nav-bg);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
-  border:1px solid var(--glass-border);border-radius:16px;
-  padding:0 8px;height:54px;display:flex;align-items:center;justify-content:space-between;
-  box-shadow:var(--shadow);transition:all .35s;
-}
-.nav.scrolled{box-shadow:var(--shadow-float)}
-.nav-brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:1.05rem;color:var(--text);letter-spacing:-.3px;cursor:pointer}
-.nav-brand-dot{width:10px;height:10px;border-radius:50%;background:var(--purple);box-shadow:0 0 8px var(--purple-glow);transition:transform .3s,box-shadow .3s}
-.nav-brand:hover .nav-brand-dot{transform:scale(1.5);box-shadow:0 0 16px var(--purple-glow)}
-.nav-links{display:flex;align-items:center;gap:2px;list-style:none}
-.nav-links a{padding:7px 13px;border-radius:10px;font-size:.85rem;color:var(--text2);transition:all .2s}
-.nav-links a:hover,.nav-links a.active{background:var(--tag-bg);color:var(--purple)}
-.nav-actions{display:flex;align-items:center;gap:6px}
-.theme-btn{
-  width:36px;height:36px;border:none;border-radius:10px;
-  background:var(--tag-bg);color:var(--purple);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
-  transition:all .25s;
-}
-.theme-btn:hover{background:var(--border-strong);transform:scale(1.08)}
-.mobile-btn{
-  display:none;width:36px;height:36px;border:none;border-radius:10px;
-  background:var(--tag-bg);color:var(--purple);cursor:pointer;
-  align-items:center;justify-content:center;font-size:1.2rem;
-}
-.mob-menu{
-  display:none;position:fixed;top:72px;left:16px;right:16px;
-  background:var(--nav-bg);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
-  border:1px solid var(--glass-border);border-radius:16px;z-index:99;
-  padding:16px;gap:4px;flex-direction:column;
-  animation:slideUp .3s ease;
-}
-.mob-menu.open{display:flex}
-@keyframes slideUp{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
-.mob-menu a{padding:12px 14px;border-radius:10px;font-size:1rem;color:var(--text2)}
-.mob-menu a:hover{background:var(--tag-bg);color:var(--purple)}
-
-/* ========== HERO ========== */
-.hero{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  background:var(--hero-bg);padding:120px 24px 80px;position:relative;overflow:hidden;
-}
-.hero-orb{
-  position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px);opacity:.35;
-}
-.hero-orb.a{width:500px;height:500px;background:var(--purple-light);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite}
-.hero-orb.b{width:400px;height:400px;background:#77216F;bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite reverse}
-.hero-orb.c{width:300px;height:300px;background:var(--purple-glow);top:40%;right:20%;animation:orbFloat 15s ease-in-out infinite 3s}
-@keyframes orbFloat{0%,100%{transform:translate(0,0)}25%{transform:translate(30px,-40px)}50%{transform:translate(-20px,30px)}75%{transform:translate(40px,20px)}}
-.hero-content{position:relative;z-index:2;text-align:center;max-width:780px}
-.hero h1{color:#fff;margin-bottom:12px;font-weight:300;letter-spacing:-1px}
-.hero h1 .typed-text{font-weight:700;border-right:3px solid rgba(255,255,255,.7);padding-right:4px;animation:blink 1s step-end infinite}
-@keyframes blink{50%{border-color:transparent}}
-.hero-sub{font-size:clamp(1.05rem,2.4vw,1.3rem);color:rgba(255,255,255,.72);margin-bottom:14px;max-width:580px;margin-left:auto;margin-right:auto}
-.hero-meta{display:inline-flex;gap:20px;padding:10px 22px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:40px;margin-bottom:36px;backdrop-filter:blur(8px)}
-.hero-meta span{font-size:.82rem;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:6px}
-.hero-meta-dot{width:6px;height:6px;border-radius:50%;background:#2EA047}
-.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.btn{
-  display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:12px;
-  font-size:.93rem;font-weight:500;border:none;cursor:pointer;transition:all .25s;
-  text-decoration:none;font-family:inherit;
-}
-.btn-glow{
-  background:#fff;color:var(--purple);box-shadow:0 2px 12px rgba(255,255,255,.2),0 0 30px rgba(119,33,111,.2);
-}
-.btn-glow:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(255,255,255,.3),0 0 50px rgba(119,33,111,.3);color:var(--purple)}
-.btn-glass{
-  background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.18);
-  backdrop-filter:blur(6px);
-}
-.btn-glass:hover{background:rgba(255,255,255,.16);transform:translateY(-2px);color:#fff}
-.btn-purple{background:var(--purple);color:#fff;box-shadow:0 4px 16px rgba(119,33,111,.3)}
-.btn-purple:hover{background:var(--purple-dark);transform:translateY(-2px);color:#fff}
-.btn-outline{background:transparent;color:var(--purple);border:1.5px solid var(--purple)}
-.btn-outline:hover{background:var(--tag-bg);transform:translateY(-2px);color:var(--purple)}
-.btn-sm{padding:9px 18px;font-size:.84rem;border-radius:10px}
-
-/* ========== FLOATING SECTION HELPER ========== */
-.section{padding:90px 24px;max-width:1140px;margin:0 auto}
-.section-header{text-align:center;margin-bottom:52px}
-.section-header h2{margin-bottom:10px}
-.section-header p{margin:0 auto;color:var(--text-muted);font-size:1.05rem}
-.section-alt{background:var(--bg2);transition:background .35s}
-
-/* ========== FLOATING CARDS ========== */
-.float-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-  padding:32px 28px;transition:all .3s;position:relative;
-  box-shadow:var(--shadow);
-}
-.float-card:hover{
-  transform:translateY(-4px);box-shadow:var(--shadow-float);border-color:var(--border-strong);
-}
-.float-card .card-accent{
-  position:absolute;top:0;left:24px;right:24px;height:3px;border-radius:0 0 4px 4px;
-  background:linear-gradient(90deg,var(--purple),var(--purple-light));opacity:0;transition:opacity .3s;
-}
-.float-card:hover .card-accent{opacity:1}
-.float-card h3{margin-bottom:10px}
-.float-card p{font-size:.93rem;line-height:1.7}
-.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:22px}
-
-/* ========== STATS ========== */
-.stats-row{
-  display:flex;justify-content:center;gap:40px;flex-wrap:wrap;padding:48px 24px;
-}
-.stat{text-align:center;cursor:default;transition:transform .2s}
-.stat:hover{transform:scale(1.1)}
-.stat-num{font-size:clamp(2rem,5vw,3rem);font-weight:700;color:var(--purple);line-height:1}
-.stat-label{font-size:.88rem;color:var(--text-muted);margin-top:4px}
-
-/* ========== HISTORY TIMELINE ========== */
-.timeline{max-width:720px;margin:0 auto;position:relative;padding-left:36px}
-.timeline::before{content:'';position:absolute;left:12px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--purple),var(--purple-light),transparent)}
-.tl-item{position:relative;margin-bottom:32px;transition:transform .2s}
-.tl-item:hover{transform:translateX(4px)}
-.tl-dot{position:absolute;left:-30px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--purple);border:3px solid var(--surface);box-shadow:0 0 0 2px var(--purple);transition:box-shadow .2s}
-.tl-item:hover .tl-dot{box-shadow:0 0 0 3px var(--purple),0 0 12px var(--purple-glow)}
-.tl-year{font-weight:700;color:var(--purple);font-size:1rem;margin-bottom:4px}
-.tl-item p{font-size:.93rem;color:var(--text2)}
-
-/* ========== DOWNLOADS ========== */
-.dl-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;max-width:920px;margin:0 auto}
-.dl-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-  padding:36px 32px;text-align:center;transition:all .3s;position:relative;
-  box-shadow:var(--shadow);
-}
-.dl-card.featured{
-  border-color:var(--purple);border-width:2px;
-  box-shadow:var(--shadow-glow),var(--shadow-float);
-}
-.dl-card.featured .dl-badge{
-  position:absolute;top:-14px;left:50%;transform:translateX(-50%);
-  background:linear-gradient(135deg,var(--purple),var(--purple-light));color:#fff;
-  padding:5px 20px;border-radius:20px;font-size:.78rem;font-weight:600;white-space:nowrap;
-}
-.dl-card h3{margin-bottom:4px}
-.dl-card .ver{color:var(--purple-light);font-weight:600;font-size:1.15rem;margin-bottom:4px}
-.dl-card .code{color:var(--text-muted);font-size:.9rem;margin-bottom:16px;font-style:italic}
-.dl-card .meta{display:flex;gap:16px;justify-content:center;margin-bottom:22px;flex-wrap:wrap}
-.dl-card .meta span{font-size:.82rem;color:var(--text-muted);display:flex;align-items:center;gap:4px}
-.dl-card .note{display:inline-block;font-size:.75rem;color:var(--text-muted);background:var(--tag-bg);padding:3px 10px;border-radius:6px;margin-bottom:16px}
-
-/* ========== SUPPORT ========== */
-.sup-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;max-width:820px;margin:0 auto}
-.sup-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-  padding:32px;text-align:center;transition:all .3s;box-shadow:var(--shadow);
-}
-.sup-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-float);border-color:var(--border-strong)}
-.sup-card h3{margin-bottom:8px}
-.sup-card p{font-size:.92rem;margin-bottom:20px}
-
-/* ========== TIPS ========== */
-.tips{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
-.tip{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);
-  padding:20px 24px;display:flex;gap:16px;align-items:flex-start;transition:all .25s;
-}
-.tip:hover{border-color:var(--border-strong);box-shadow:var(--shadow-float);transform:translateX(4px)}
-.tip-n{
-  width:32px;height:32px;border-radius:50%;flex-shrink:0;
-  background:var(--tag-bg);color:var(--purple);display:flex;align-items:center;justify-content:center;
-  font-size:.85rem;font-weight:700;
-}
-.tip h4{margin-bottom:3px;font-size:1rem}
-.tip p{font-size:.9rem;color:var(--text-muted)}
-code{background:var(--code-bg);padding:2px 8px;border-radius:4px;font-size:.85rem;font-family:'Ubuntu Mono',monospace}
-
-/* ========== TEAM ========== */
-.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
-.team-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:16px;
-  padding:24px;text-align:center;transition:all .3s;box-shadow:var(--shadow);
-}
-.team-card:hover{border-color:var(--border-strong);box-shadow:var(--shadow-float);transform:translateY(-3px)}
-.team-av{
-  width:56px;height:56px;border-radius:50%;margin:0 auto 12px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.3rem;font-weight:700;color:#fff;transition:transform .3s;
-}
-.team-card:hover .team-av{transform:rotate(10deg) scale(1.08)}
-.team-card h4{margin-bottom:3px;font-size:1rem}
-.team-card .role{font-size:.82rem;color:var(--purple-light);margin-bottom:8px}
-.status{display:inline-flex;align-items:center;gap:5px;font-size:.75rem;padding:3px 10px;border-radius:20px}
-.status.on{background:rgba(46,160,67,.1);color:#2EA047}
-.status.off{background:rgba(210,153,34,.1);color:#D29922}
-.status::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-
-/* ========== FAQ ========== */
-.faq-list{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
-.faq-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;transition:all .2s}
-.faq-item.open{border-color:var(--border-strong)}
-.faq-q{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:18px 24px;cursor:pointer;font-weight:500;font-size:.98rem;
-  color:var(--text);background:none;border:none;width:100%;text-align:left;font-family:inherit;
-}
-.faq-q:hover{color:var(--purple)}
-.faq-q .chevron{font-size:.8rem;transition:transform .3s;color:var(--text-muted)}
-.faq-item.open .chevron{transform:rotate(180deg)}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease}
-.faq-item.open .faq-a{max-height:500px}
-.faq-a-inner{padding:0 24px 18px;font-size:.93rem;color:var(--text2);line-height:1.75}
-
-/* ========== TAGS ========== */
-.tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:700px;margin:0 auto}
-.tag{
-  padding:7px 18px;border-radius:20px;font-size:.85rem;
-  background:var(--tag-bg);color:var(--tag-text);font-weight:500;
-  transition:all .2s;cursor:default;user-select:none;
-}
-.tag:hover{background:var(--border-strong);transform:translateY(-2px) scale(1.05)}
-
-/* ========== FUN: CONFETTI CANVAS ========== */
-.confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:200}
-
-/* ========== FUN: EASTER EGG TOAST ========== */
-.toast{
-  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
-  background:var(--surface);border:1px solid var(--purple);border-radius:14px;
-  padding:14px 24px;box-shadow:var(--shadow-float),var(--shadow-glow);
-  z-index:150;opacity:0;pointer-events:none;transition:all .4s;font-size:.92rem;
-  color:var(--purple);font-weight:500;max-width:360px;text-align:center;
-}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
-
-/* ========== FUN: SPARKLE CURSOR ========== */
-.sparkle{
-  position:fixed;width:6px;height:6px;border-radius:50%;pointer-events:none;z-index:9999;
-  background:var(--purple);opacity:0;animation:sparkleAnim .6s ease forwards;
-}
-@keyframes sparkleAnim{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(0) translateY(-20px)}}
-
-/* ========== FUN: TILT CARD ========== */
-.tilt-wrap{perspective:800px}
-.tilt-inner{transition:transform .15s ease}
-
-/* ========== FLOATING FOOTER ========== */
-.footer-float{
-  margin:24px;bottom:0;
-  background:var(--nav-bg);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
-  border:1px solid var(--glass-border);border-radius:var(--radius);
-  padding:28px 32px;text-align:center;transition:all .35s;box-shadow:var(--shadow);
-}
-.footer-float p{font-size:.86rem;color:var(--text-muted);margin-bottom:8px}
-.footer-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
-.footer-links a{font-size:.84rem;color:var(--text-muted)}
-.footer-links a:hover{color:var(--purple)}
-
-/* ========== BACK TO TOP ========== */
-.btt{
-  position:fixed;bottom:28px;right:28px;z-index:50;
-  width:46px;height:46px;border-radius:50%;
-  background:var(--purple);color:#fff;border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;font-size:1.2rem;
-  opacity:0;pointer-events:none;transition:all .3s;
-  box-shadow:0 4px 16px rgba(119,33,111,.35);
-}
-.btt.show{opacity:1;pointer-events:auto}
-.btt:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(119,33,111,.4)}
-
-/* ========== SCROLL ANIM ========== */
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
-.reveal.vis{opacity:1;transform:translateY(0)}
-.reveal{animation:revealFallback 0s .8s forwards}
-.reveal.vis{animation:none}
-@keyframes revealFallback{to{opacity:1;transform:translateY(0)}}
-
-/* ========== RESPONSIVE ========== */
-@media(max-width:768px){
-  .nav-links{display:none}.mobile-btn{display:flex}
-  .hero{min-height:90vh;padding:100px 20px 60px}
-  .section{padding:60px 18px}
-  .grid3,.dl-cards{grid-template-columns:1fr}
-  .team-grid{grid-template-columns:1fr 1fr}
-  .hero-btns{flex-direction:column;align-items:center}
-  .btn{width:100%;max-width:280px;justify-content:center}
-  .stats-row{gap:24px}
-  .hero-meta{flex-direction:column;gap:8px;padding:10px 16px}
-  .footer-float{margin:12px;border-radius:16px}
-  .nav{width:calc(100% - 20px);top:10px}
-}
-@media(max-width:480px){.team-grid{grid-template-columns:1fr}}
-</style>
+<title>Ubuntu Unity — The Unity Desktop, Reborn</title>
+<meta name="description" content="Ubuntu Unity brings back the iconic Unity7 desktop on a modern Ubuntu base. An official Ubuntu flavor with full Compiz, GTK3, and Yaru-purple theme support.">
+<link rel="icon" href="images/logo.webp" type="image/webp">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ===== FLOATING NAV ===== -->
+<!-- ===== FLOATING NAVBAR ===== -->
 <nav class="nav" id="nav" role="navigation" aria-label="Main navigation">
   <a href="#" class="nav-brand" aria-label="Ubuntu Unity Home" id="navBrand">
-    <span class="nav-brand-dot"></span> Ubuntu Unity
+    <img src="images/logo.webp" alt="Ubuntu Unity Logo" class="nav-logo">
+    <span>Ubuntu Unity</span>
   </a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#features">Features</a></li>
-    <li><a href="#faq">FAQ</a></li>
-    <li><a href="#tags">Tags</a></li>
-    <li><a href="#support">Support</a></li>
-    <li><a href="#download" class="btn-purple btn-sm" style="color:#fff;padding:7px 16px;border-radius:10px;font-size:.84rem">Download</a></li>
+    <li><a href="#desktops">Desktops</a></li>
+    <li><a href="#download">Download</a></li>
+    <li><a href="#blog" class="btn-purple btn-sm" style="color:#fff">Blog</a></li>
   </ul>
   <div class="nav-actions">
     <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">&#9790;</button>
@@ -364,19 +32,18 @@ code{background:var(--code-bg);padding:2px 8px;border-radius:4px;font-size:.85re
 <div class="mob-menu" id="mobMenu">
   <a href="#about" onclick="closeMob()">About</a>
   <a href="#features" onclick="closeMob()">Features</a>
-  <a href="#faq" onclick="closeMob()">FAQ</a>
-  <a href="#tags" onclick="closeMob()">Tags</a>
-  <a href="#support" onclick="closeMob()">Support</a>
-  <a href="#download" onclick="closeMob()">Downloads</a>
+  <a href="#desktops" onclick="closeMob()">Desktops</a>
+  <a href="#download" onclick="closeMob()">Download</a>
+  <a href="blog.html" onclick="closeMob()">Blog</a>
 </div>
 
-<!-- ===== HERO ===== -->
+<!-- ===== HERO with 3D Laptop ===== -->
 <section class="hero" id="hero">
   <div class="hero-orb a"></div>
   <div class="hero-orb b"></div>
   <div class="hero-orb c"></div>
   <div class="hero-content">
-    <h1>The Classic Desktop,<br><span class="typed-text" id="typedText"></span></h1>
+    <h1>The Unity Desktop,<br><span class="typed-text" id="typedText"></span></h1>
     <p class="hero-sub">Ubuntu Unity brings back the iconic Unity7 desktop — the same interface millions loved from 2011 to 2017 — now running on a modern Ubuntu base with full Compiz, GTK3, and Unity Tweak Tool support.</p>
     <div class="hero-meta">
       <span><span class="hero-meta-dot"></span> Official Ubuntu Flavor</span>
@@ -387,18 +54,33 @@ code{background:var(--code-bg);padding:2px 8px;border-radius:4px;font-size:.85re
       <a href="#download" class="btn btn-glow">Download Ubuntu Unity</a>
       <a href="#about" class="btn btn-glass">Explore the Story</a>
     </div>
+    <div class="hero-laptop-wrap">
+      <div class="hero-laptop">
+        <img src="images/laptop.webp" alt="Ubuntu Unity 26.04 Resolute Desktop showing the Unity7 interface with the Yaru-purple theme, vertical launcher, and top panel." width="680" height="420">
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- ===== STATS ===== -->
 <div style="background:var(--bg2);transition:background .35s">
 <div class="stats-row">
-  <div class="stat reveal" title="Unity has been around since 2010!"><div class="stat-num" data-count="13">0</div><div class="stat-label">Years of Unity</div></div>
-  <div class="stat reveal"><div class="stat-num" data-count="6">0</div><div class="stat-label">Ubuntu LTS Releases</div></div>
-  <div class="stat reveal"><div class="stat-num" data-count="2020">0</div><div class="stat-label">Community Revival</div></div>
-  <div class="stat reveal"><div class="stat-num" data-count="5">0</div><div class="stat-label">Year Official LTS Support</div></div>
-  <div class="stat reveal"><div class="stat-num" data-count="3">0</div><div class="stat-label">Year Community LTS Support</div></div>
-
+  <div class="stat reveal" title="Unity has been around since 2010!">
+    <div class="stat-num" data-count="16">0</div>
+    <div class="stat-label">Years of Unity</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-num" data-count="2020">0</div>
+    <div class="stat-label">Community Revival</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-num" data-count="3">0</div>
+    <div class="stat-label">Year Community LTS Support</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-num" data-count="5">0</div>
+    <div class="stat-label">Year Official LTS Support</div>
+  </div>
 </div>
 </div>
 
@@ -414,7 +96,7 @@ code{background:var(--code-bg);padding:2px 8px;border-radius:4px;font-size:.85re
       <h3 style="margin-bottom:14px;color:var(--purple)">A Desktop Ahead of Its Time</h3>
       <p style="margin-bottom:16px">Unity was first introduced by Canonical in 2010 with Ubuntu 10.10 Netbook Edition, and became the default desktop starting with Ubuntu 11.04 Natty Narwhal. Designed by Mark Shuttleworth and the Canonical design team, it replaced GNOME 2 with a vertically-docked launcher, a global menu bar, the revolutionary Heads-Up Display (HUD), and an integrated dash for searching applications, files, and online sources — all years before similar features appeared in other desktops.</p>
       <p style="margin-bottom:16px">Unity was built on top of Compiz, one of the most powerful compositing window managers on Linux. This gave it smooth animations, desktop effects, and a level of visual polish that was unmatched at the time. The Compiz engine powered wobbly windows, desktop cubes, scale/spread effects, and dozens of plugins that users could configure through CompizConfig Settings Manager (CCSM) or partially through Unity Tweak Tool.</p>
-      <p>In April 2017, Canonical announced it would stop developing Unity and switch to GNOME 3 for Ubuntu 17.10. The decision left millions of loyal users without their preferred desktop — but the community refused to let it die. Rudra Saraswat, then 14 years old, stepped up and started the Ubuntu Unity remix, which would become an official flavor in 2020.</p>
+      <p style="margin-bottom:16px">In April 2017, Canonical announced it would stop developing Unity and switch to GNOME 3 for Ubuntu 17.10. The decision left millions of loyal users without their preferred desktop. The same year, UBports took over maintenance of Ubuntu Touch and Unity8, carrying the mobile vision forward. The community refused to let the desktop die — Rudra Saraswat, then 14 years old, stepped up and started the Ubuntu Unity remix. The revival gained momentum through 2020, and Ubuntu Unity became an official flavor in 2022 with the 22.10 release.</p>
     </div>
     <div class="timeline">
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2010</div><p>Unity debuts in Ubuntu 10.10 Netbook Edition as a new shell for small screens.</p></div>
@@ -422,21 +104,17 @@ code{background:var(--code-bg);padding:2px 8px;border-radius:4px;font-size:.85re
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2012</div><p>Unity 2D (Qt-based) introduced for systems without 3D acceleration. HUD (Heads-Up Display) debuts in 12.04 LTS.</p></div>
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2013</div><p>Unity7 refined with lens and scope improvements, smart scopes controversy, and Mir display server announced.</p></div>
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2014</div><p>Unity8 and Mir debut on Ubuntu Touch. Unity7 continues as desktop default in 14.04 LTS with major performance improvements.</p></div>
-      <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2016</div><p>Ubuntu 16.04 LTS ships with a polished Unity7. This becomes the most beloved Unity release for many users.</p></div>
-      <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2017</div><p>Canonical announces Unity discontinuation. Ubuntu 17.10 switches to GNOME. Rudra Saraswat starts Ubuntu Unity remix.</p></div>
-      <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2020</div><p>Ubuntu Unity becomes an official Ubuntu flavor! First official release: 20.04 LTS (Focal Fossa).</p></div>
-      <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2022</div><p>Ubuntu Unity 22.04 LTS (Jammy Jellyfish) released with improved Unity7 stability and modernized Yaru-purple theme.</p></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2016</div><p>Ubuntu 16.04 LTS ships with a polished Unity7 — considered by many to be the peak of the Unity desktop experience.</p></div>
+      <div class="tl-item highlight"><div class="tl-dot"></div><div class="tl-year">2017</div><p>Canonical announces Unity discontinuation. Ubuntu 17.10 switches to GNOME. UBports takes over maintenance of Ubuntu Touch and Unity8.</p></div>
+      <div class="tl-item highlight"><div class="tl-dot"></div><div class="tl-year">2020</div><p>Community revival of Ubuntu Unity gains momentum. Rudra Saraswat's remix grows with contributors and user interest.</p></div>
+      <div class="tl-item highlight"><div class="tl-dot"></div><div class="tl-year">2020</div><p>Unity8 is rebranded as Lomiri by UBports, continuing its evolution independently.</p></div>
+      <div class="tl-item highlight"><div class="tl-dot"></div><div class="tl-year">2022</div><p>Ubuntu Unity becomes an official Ubuntu flavor with the 22.10 (Kinetic Kudu) release. A major milestone for the community.</p></div>
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2024</div><p>Ubuntu Unity 24.04 LTS (Noble Numbat) ships with continued Unity7 maintenance and updated packages.</p></div>
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2026</div><p>Ubuntu Unity 26.04 (Resolute) arrives — treated as LTS by the community with refreshed artwork, HiDPI improvements, and ongoing bug fixes.</p></div>
     </div>
   </div>
 
   <div class="grid3 reveal" style="margin-top:48px">
-    <div class="float-card">
-      <div class="card-accent"></div>
-      <h3>Theme Compatibility from 16.04</h3>
-      <p>Ubuntu Unity preserves full compatibility with themes dating back to the Ubuntu 16.04 era. The classic Ambiance and Radiance themes — the iconic dark and light looks that defined Ubuntu for years — still work beautifully. Popular community themes like Arc, Numix, Adwaita, and the full Yaru family are all supported. The Yaru-purple variant, with its deep aubergine and violet tones, is the signature theme of Ubuntu Unity and ships as the default, making every desktop element feel cohesive and unmistakably Unity.</p>
-    </div>
     <div class="float-card">
       <div class="card-accent"></div>
       <h3>Compiz &amp; Unity Tweak Tool</h3>
@@ -462,7 +140,7 @@ code{background:var(--code-bg);padding:2px 8px;border-radius:4px;font-size:.85re
     <div class="float-card">
       <div class="card-accent"></div>
       <h3>The HUD (Heads-Up Display)</h3>
-      <p>Press Alt and start typing to search any menu action in any application — no mouse required. Want to "Save As" in GIMP? Just type it. Need "Find and Replace" in LibreOffice? The HUD finds it instantly. This feature, unique to Unity, was introduced in 2012 and still has no real equivalent in GNOME, KDE, or any other desktop. It's command palette for your entire desktop, years before VS Code popularized the concept.</p>
+      <p>Press Alt and start typing to search any menu action in any application — no mouse required. Want to "Save As" in GIMP? Just type it. Need "Find and Replace" in LibreOffice? The HUD finds it instantly. This feature, unique to Unity, was introduced in 2012 and still has no real equivalent in GNOME, KDE, or any other desktop. It's a command palette for your entire desktop, years before VS Code popularized the concept.</p>
     </div>
 
     <div class="float-card">
@@ -480,24 +158,61 @@ code{background:var(--code-bg);padding:2px 8px;border-radius:4px;font-size:.85re
     <div class="float-card">
       <div class="card-accent"></div>
       <h3>Workspace Grid &amp; Compiz Effects</h3>
-      <p>Unity offers a 2x2 workspace grid by default, with easy switching through the workspace switcher or keyboard shortcuts (Super+S for spread, Ctrl+Alt+Arrow for direct switching). Through Unity Tweak Tool you can configure workspace animation styles — the Compiz-powered expo and spread effects. For the full desktop cube, wobbly windows, and other advanced Compiz effects, use CCSM. Together, they give you the most flexible workspace management on any Linux desktop.</p>
+      <p>Unity offers a 2x2 workspace grid by default, with easy switching through the workspace switcher or keyboard shortcuts (Super+S for spread, Ctrl+Alt+Arrow for direct switching). Through Unity Tweak Tool you can configure workspace animation styles — the Compiz-powered expo and spread effects. For the full desktop cube, wobbly windows, and other advanced Compiz effects, use CCSM.</p>
     </div>
 
     <div class="float-card">
       <div class="card-accent"></div>
       <h3>Yaru-Purple: Ubuntu Unity's Identity</h3>
-      <p>Ubuntu Unity ships with the Yaru-purple theme — a variant of Ubuntu's Yaru theme that embraces the deep purple and aubergine tones that have been part of Ubuntu's visual DNA since the very beginning. The color #77216F (Ubuntu Purple) appears throughout the interface: selected items, toggle switches, progress bars, header bars, and accent elements. Combined with the dark aubergine #2C001E, it creates a desktop that is unmistakably Ubuntu Unity — nostalgic yet contemporary, with light and dark mode variants included.</p>
+      <p>Ubuntu Unity ships with the Yaru-purple theme — a variant of Ubuntu's Yaru theme that embraces the deep indigo-purple tones that have been part of Ubuntu's visual DNA since the very beginning. The signature indigo-purple color appears throughout the interface: selected items, toggle switches, progress bars, header bars, and accent elements. Combined with the deep aubergine dark tones, it creates a desktop that is unmistakably Ubuntu Unity.</p>
     </div>
 
     <div class="float-card">
       <div class="card-accent"></div>
       <h3>Rock-Solid LTS Foundation</h3>
-      <p>Every Ubuntu Unity release is built on an Ubuntu LTS base, meaning five years of security updates, kernel updates, and package refreshes. The 24.04 release is officially LTS and supported until 2029. The 26.04 release (Resolute) is treated as LTS by the community with the same long-term support commitment. Point releases provide refreshed ISO images so you don't need to download hundreds of updates after installation.</p>
+      <p>Ubuntu Unity LTS releases are built on an official Ubuntu LTS base, meaning five years of security updates, kernel updates, and package refreshes from Canonical. The 24.04 release is officially LTS and supported until 2029. Community LTS releases like 26.04 receive 3 years of support from the Ubuntu Unity team. Point releases provide refreshed ISO images so you don't need to download hundreds of updates after installation.</p>
     </div>
 
   </div>
 </section>
 </div>
+
+<!-- ===== DESKTOP SHOWCASE (3D) ===== -->
+<section class="desktop-showcase" id="desktops">
+  <div class="desktop-showcase-inner">
+    <div class="section-header reveal">
+      <h2>See Unity in Action</h2>
+      <p>The desktop that defined a generation — now refined for the modern era.</p>
+    </div>
+    <div class="showcase-grid reveal">
+
+      <div class="showcase-card showcase-featured">
+        <img src="images/desktop-wallpaper.png" alt="Ubuntu Unity 26.04 desktop showing the full Unity7 interface with Yaru-purple theme, vertical launcher on the left, top panel with global menu, and application shortcuts in the dock." loading="lazy">
+        <div class="overlay">
+          <h4>Ubuntu Unity 26.04 Resolute</h4>
+          <p>The latest release with refreshed artwork, HiDPI improvements, and the polished Yaru-purple theme across every desktop element.</p>
+        </div>
+      </div>
+
+      <div class="showcase-card">
+        <img src="images/multi-window.png" alt="Ubuntu Unity desktop showing multi-window workflow with a text editor and file manager open side by side, demonstrating Unity's efficient window management and workspace usage." loading="lazy">
+        <div class="overlay">
+          <h4>Multi-Window Workflow</h4>
+          <p>Unity's window management makes multitasking effortless — drag windows to edges, use workspaces, and let Compiz handle the animations.</p>
+        </div>
+      </div>
+
+      <div class="showcase-card">
+        <img src="images/dash-search.png" alt="Ubuntu Unity showing the Dash application search interface with LibreOffice results displayed, demonstrating the powerful search and application discovery features of the Unity desktop." loading="lazy">
+        <div class="overlay">
+          <h4>Dash &amp; Application Search</h4>
+          <p>The Dash provides instant application search, file finding, and lens results — press Super and start typing. Fast, beautiful, and integrated.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 <!-- ===== DOWNLOADS ===== -->
 <section class="section" id="download">
@@ -511,11 +226,11 @@ code{background:var(--code-bg);padding:2px 8px;border-radius:4px;font-size:.85re
       <span class="dl-badge">Latest</span>
       <h3>Ubuntu Unity 26.04</h3>
       <div class="ver">Community LTS</div>
-      <div class="note">Treated as LTS by the Ubuntu Unity community</div>
+      <div class="note">3 years of community long-term support</div>
       <div class="code">Resolute</div>
       <div class="meta">
         <span>amd64 (64-bit)</span>
-        <span>Long-term support</span>
+        <span>Released 2026</span>
       </div>
       <p style="margin:0 auto 22px;font-size:.9rem;max-width:44ch">The newest release with refreshed artwork, HiDPI improvements, and the latest Unity7 refinements on the Ubuntu 26.04 base.</p>
       <a href="https://cdimage.ubuntu.com/ubuntu-unity/releases/resolute/release/ubuntu-unity-26.04-desktop-amd64.iso" class="btn btn-purple" rel="noopener">Download 26.04 ISO</a>
@@ -561,7 +276,7 @@ code{background:var(--code-bg);padding:2px 8px;border-radius:4px;font-size:.85re
 
     <div class="sup-card reveal">
       <h3>Community Resources</h3>
-      <p>Ask questions on the <a href="https://askubuntu.com" target="_blank" rel="noopener">Ask Ubuntu</a> Stack Exchange with the <code>ubuntu-unity</code> tag, join the <a href="https://ubuntuforums.org" target="_blank" rel="noopener">Ubuntu Forums</a>, or visit the <a href="https://t.me/ubuntuunity" target="_blank" rel="noopener">Ubuntu Unity Telegram group</a> for real-time help. The Ubuntu Wiki also maintains documentation for Unity7 configuration and troubleshooting.</p>
+      <p>Ask questions on the <a href="https://askubuntu.com" target="_blank" rel="noopener">Ask Ubuntu</a> Stack Exchange with the <code>ubuntu-unity</code> tag, join the <a href="https://ubuntuforums.org" target="_blank" rel="noopener">Ubuntu Forums</a>, or visit the <a href="https://t.me/ubuntuunity" target="_blank" rel="noopener">Ubuntu Unity Telegram group</a> for real-time help.</p>
     </div>
 
   </div>
@@ -578,17 +293,22 @@ code{background:var(--code-bg);padding:2px 8px;border-radius:4px;font-size:.85re
 
     <div class="faq-item reveal">
       <button class="faq-q" aria-expanded="false">What is Ubuntu Unity? <span class="chevron">&#9660;</span></button>
-      <div class="faq-a"><div class="faq-a-inner">Ubuntu Unity is an official community-maintained Ubuntu flavor that brings back the Unity7 desktop environment. Unity was originally developed by Canonical as the default Ubuntu desktop from version 11.04 (April 2011) through 17.04. When Canonical discontinued Unity in 2017, the community — led by Rudra Saraswat, who was 14 at the time — continued maintaining it. Ubuntu Unity became an official flavor in 2020 with the 20.04 LTS release, and has shipped for every LTS since. It combines the unique Unity workflow (launcher, HUD, global menu, dash) with a modern Ubuntu base.</div></div>
+      <div class="faq-a"><div class="faq-a-inner">Ubuntu Unity is an official community-maintained Ubuntu flavor that brings back the Unity7 desktop environment. Unity was originally developed by Canonical as the default Ubuntu desktop from version 11.04 (April 2011) through 17.04. When Canonical discontinued Unity in 2017, the community — led by Rudra Saraswat — continued maintaining it. After a grassroots revival through 2020, Ubuntu Unity became an official flavor in 2022 with the 22.10 release, and has shipped for every release cycle since. It combines the unique Unity workflow (launcher, HUD, global menu, dash) with a modern Ubuntu base.</div></div>
     </div>
 
     <div class="faq-item reveal">
       <button class="faq-q" aria-expanded="false">Is 26.04 an official LTS? <span class="chevron">&#9660;</span></button>
-      <div class="faq-a"><div class="faq-a-inner">Ubuntu Unity 26.04 (Resolute) is not officially designated as LTS by Canonical, but it is treated as LTS by the Ubuntu Unity community with the same long-term support commitment. The 24.04 release (Noble Numbat) is the current officially-designated LTS, supported until 2029. Both releases receive the same level of care and maintenance from the Ubuntu Unity team.</div></div>
+      <div class="faq-a"><div class="faq-a-inner">Ubuntu Unity 26.04 (Resolute) is not officially designated as LTS by Canonical, but it is treated as LTS by the Ubuntu Unity community with 3 years of long-term support. The 24.04 release (Noble Numbat) is the current officially-designated LTS by Canonical, supported until 2029 with 5 years of updates. Both releases receive active maintenance and care from the Ubuntu Unity team.</div></div>
     </div>
 
     <div class="faq-item reveal">
-      <button class="faq-q" aria-expanded="false">Can I use themes from Ubuntu 16.04? <span class="chevron">&#9660;</span></button>
-      <div class="faq-a"><div class="faq-a-inner">Yes. Ubuntu Unity maintains full compatibility with the classic Unity themes that shipped from 12.04 through 16.04 and beyond, including the iconic Ambiance (dark) and Radiance (light) themes. Community themes like Arc, Numix, Plata, and Greybird also work. The Yaru-purple theme is the default, with its distinctive purple and aubergine palette that defines Ubuntu Unity's identity. You can switch themes using Unity Tweak Tool under the Theme section.</div></div>
+      <button class="faq-q" aria-expanded="false">What happened with UBports and Lomiri? <span class="chevron">&#9660;</span></button>
+      <div class="faq-a"><div class="faq-a-inner">When Canonical discontinued Unity in 2017, UBports — a community initiative — took over maintenance of Ubuntu Touch (the mobile OS) and Unity8. In 2020, Unity8 was rebranded as Lomiri, reflecting its independent evolution away from the Ubuntu project. Lomiri continues to serve as the desktop shell for Ubuntu Touch phones and tablets. Ubuntu Unity (this project) is separate — it maintains the Unity7 desktop for traditional PCs and laptops.</div></div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q" aria-expanded="false">Can I use custom themes? <span class="chevron">&#9660;</span></button>
+      <div class="faq-a"><div class="faq-a-inner">Yes. Ubuntu Unity supports a wide range of GTK themes, including community favorites like Arc, Numix, Plata, Adwaita, and Greybird. The Yaru-purple theme is the default, with its distinctive indigo-purple palette that defines Ubuntu Unity's identity. Light and dark variants are included. You can switch themes using Unity Tweak Tool under the Theme section.</div></div>
     </div>
 
     <div class="faq-item reveal">
@@ -603,90 +323,62 @@ code{background:var(--code-bg);padding:2px 8px;border-radius:4px;font-size:.85re
 
     <div class="faq-item reveal">
       <button class="faq-q" aria-expanded="false">Is Ubuntu Unity an official flavor? <span class="chevron">&#9660;</span></button>
-      <div class="faq-a"><div class="faq-a-inner">Yes. Ubuntu Unity was accepted as an official Ubuntu flavor in 2020, before the release of Ubuntu 20.04 LTS. This means it's published on Ubuntu's official cdimage servers, benefits from Ubuntu's QA infrastructure, and is recognized by the Ubuntu Technical Board. It follows the same release schedule and LTS support timeline as other official flavors like Kubuntu, Xubuntu, and Lubuntu.</div></div>
+      <div class="faq-a"><div class="faq-a-inner">Yes. Ubuntu Unity was accepted as an official Ubuntu flavor in 2022, with its first official release being 22.10 (Kinetic Kudu). This means it's published on Ubuntu's official cdimage servers, benefits from Ubuntu's QA infrastructure, and is recognized by the Ubuntu Technical Board. It follows the same release schedule as other official flavors like Kubuntu, Xubuntu, and Lubuntu.</div></div>
     </div>
 
   </div>
 </section>
-
-<!-- ===== TAGS ===== -->
 <div class="section-alt">
-<section class="section" id="tags">
+<section class="section" id="tips">
   <div class="section-header reveal">
-    <h2>Tags</h2>
-    <p>Explore topics related to Ubuntu Unity and the desktop ecosystem.</p>
+    <h2>Tips &amp; Tricks</h2>
+    <p>Get the most out of your Unity desktop.</p>
   </div>
-  <div class="tags reveal">
-    <span class="tag">Unity7</span><span class="tag">Ubuntu</span><span class="tag">LTS</span>
-    <span class="tag">Compiz</span><span class="tag">GTK3</span><span class="tag">Yaru-Purple</span>
-    <span class="tag">Unity Tweak Tool</span><span class="tag">HUD</span><span class="tag">Global Menu</span>
-    <span class="tag">Launcher</span><span class="tag">Desktop Cube</span><span class="tag">Theming</span>
-    <span class="tag">Ambiance</span><span class="tag">Radiance</span><span class="tag">Official Flavor</span>
-    <span class="tag">X11</span><span class="tag">HiDPI</span><span class="tag">Aubergine</span>
-    <span class="tag">#77216F</span><span class="tag">CCSM</span><span class="tag">Wobbly Windows</span>
-    <span class="tag">Workspaces</span><span class="tag">Quicklists</span><span class="tag">Dash</span>
-    <span class="tag">Resolute</span><span class="tag">Community LTS</span><span class="tag">Hot Corners</span>
+  <div class="tips">
+    <div class="tip reveal">
+      <div class="tip-n">1</div>
+      <div>
+        <h4>Master the HUD</h4>
+        <p>Press Alt and start typing to search any menu action. Try "Save As", "Export", or "Find" — the HUD finds it instantly across all menus in the focused application.</p>
+      </div>
+    </div>
+    <div class="tip reveal">
+      <div class="tip-n">2</div>
+      <div>
+        <h4>Customize with Unity Tweak Tool</h4>
+        <p>Unity Tweak Tool has a dedicated section for Compiz effects: window open/close/minimize animations (choose from fade, scale, glide, and more), workspace switching style, hot corner actions, and launcher reveal behavior.</p>
+      </div>
+    </div>
+    <div class="tip reveal">
+      <div class="tip-n">3</div>
+      <div>
+        <h4>Enable the Desktop Cube (Advanced)</h4>
+        <p>Install CCSM with <code>sudo apt install compizconfig-settings-manager</code>, then enable "Desktop Cube" and "Rotate Cube" plugins. Disable "Wall" first (they conflict). Now Ctrl+Alt+drag rotates a 3D cube between workspaces.</p>
+      </div>
+    </div>
+    <div class="tip reveal">
+      <div class="tip-n">4</div>
+      <div>
+        <h4>Set Up Hot Corners</h4>
+        <p>In Unity Tweak Tool, under Hotcorners, assign actions to each screen corner: show desktop, spread windows, show workspaces, or start the screen saver. A single mouse flick to a corner becomes a powerful shortcut.</p>
+      </div>
+    </div>
   </div>
 </section>
 </div>
 
-<!-- ===== TIPS ===== -->
-<section class="section" id="tips">
-  <div class="section-header reveal">
-    <h2>Tips for New Users</h2>
-    <p>Get the most out of Ubuntu Unity from day one.</p>
-  </div>
-  <div class="tips">
-
-    <div class="tip reveal"><span class="tip-n">1</span><div>
-      <h4>Master the HUD</h4>
-      <p>Tap Alt and start typing any menu action — "Save As", "Preferences", "Zoom In" — the HUD finds it instantly across any open application. This is Unity's killer feature and nothing else on Linux comes close.</p>
-    </div></div>
-
-    <div class="tip reveal"><span class="tip-n">2</span><div>
-      <h4>Pin Your Favorite Apps</h4>
-      <p>Drag an app from the Dash onto the launcher to pin it. Right-click any launcher icon for quicklists — Firefox shows recent bookmarks, the file manager shows bookmarks and mounted drives, and the terminal shows open sessions.</p>
-    </div></div>
-
-    <div class="tip reveal"><span class="tip-n">3</span><div>
-      <h4>Super Key Is Your Friend</h4>
-      <p>Press Super (the Windows key) to open the Dash and search for apps, files, and settings. Hold Super to see a keyboard shortcut overlay. Super+1 through Super+9 launches or focuses the corresponding launcher icon.</p>
-    </div></div>
-
-    <div class="tip reveal"><span class="tip-n">4</span><div>
-      <h4>Customize Compiz Effects in Unity Tweak Tool</h4>
-      <p>You don't always need CCSM! Unity Tweak Tool has a dedicated section for Compiz effects: window open/close/minimize animations (choose from fade, scale, glide, and more), workspace switching style, hot corner actions, and launcher reveal behavior. It's the safe and easy way to tweak your desktop's visual effects without risking a broken session.</p>
-    </div></div>
-
-    <div class="tip reveal"><span class="tip-n">5</span><div>
-      <h4>Enable the Desktop Cube (Advanced)</h4>
-      <p>Install CCSM with <code>sudo apt install compizconfig-settings-manager</code>, then enable "Desktop Cube" and "Rotate Cube" plugins. Disable "Wall" first (they conflict). Now Ctrl+Alt+drag rotates a 3D cube between workspaces — pure nostalgia. Add "Wobbly Windows" for extra fun.</p>
-    </div></div>
-
-    <div class="tip reveal"><span class="tip-n">6</span><div>
-      <h4>Restore Classic Ambiance</h4>
-      <p>Install the classic themes with <code>sudo apt install light-themes</code>, then switch to Ambiance in Unity Tweak Tool. Pair it with the Humanity icon theme for the full 16.04 experience — dark window chrome, orange accents, and all.</p>
-    </div></div>
-
-    <div class="tip reveal"><span class="tip-n">7</span><div>
-      <h4>Configure Hot Corners</h4>
-      <p>In Unity Tweak Tool, under Hotcorners, assign actions to each screen corner: show desktop, spread windows, show workspaces, or start the screen saver. A single mouse flick to a corner becomes a powerful productivity shortcut.</p>
-    </div></div>
-
-  </div>
-</section>
-
 <!-- ===== TEAM ===== -->
-<div class="section-alt">
 <section class="section" id="team">
   <div class="section-header reveal">
     <h2>Meet the Team</h2>
     <p>The people keeping Unity7 alive and thriving.</p>
   </div>
+
+  <div class="team-section-label reveal">Current Team</div>
   <div class="team-grid">
 
     <div class="team-card reveal">
-      <div class="team-av" style="background:linear-gradient(135deg,#77216F,#9242C4)">RS</div>
+      <div class="team-av" style="background:linear-gradient(135deg,#6366F1,#818CF8)">RS</div>
       <h4>Rudra Saraswat</h4>
       <div class="role">Creator &amp; Project Lead</div>
       <span class="status off">Temporarily absent</span>
@@ -703,11 +395,11 @@ code{background:var(--code-bg);padding:2px 8px;border-radius:4px;font-size:.85re
       <div class="team-av" style="background:linear-gradient(135deg,#2EA047,#1A7F37)">MA</div>
       <h4>Maik Adamietz</h4>
       <div class="role">Community Moderator / Admin</div>
-      <span class="status off">Temporarily absent</span>
+      <span class="status off">Stepped out</span>
     </div>
 
     <div class="team-card reveal">
-      <div class="team-av" style="background:linear-gradient(135deg,#9242C4,#77216F)">TK</div>
+      <div class="team-av" style="background:linear-gradient(135deg,#818CF8,#6366F1)">TK</div>
       <h4>Tobiyo Kuujikai</h4>
       <div class="role">Coordinator &amp; Community Mod / Admin</div>
       <span class="status on">Active</span>
@@ -728,29 +420,72 @@ code{background:var(--code-bg);padding:2px 8px;border-radius:4px;font-size:.85re
     </div>
 
     <div class="team-card reveal">
-      <div class="team-av" style="background:linear-gradient(135deg,#77216F,#E95420)">LE</div>
+      <div class="team-av" style="background:linear-gradient(135deg,#6366F1,#F59E0B)">LE</div>
       <h4>Lexi Ewald</h4>
       <div class="role">Unity7 Desktop Developer &amp; Tester</div>
       <span class="status on">Active</span>
     </div>
 
     <div class="team-card reveal">
-      <div class="team-av" style="background:linear-gradient(135deg,#AD5EBF,#77216F)">AN</div>
+      <div class="team-av" style="background:linear-gradient(135deg,#A5B4FC,#6366F1)">AN</div>
       <h4>Azzy Novais</h4>
       <div class="role">Artwork &amp; UX/UI Designer, Tester</div>
       <span class="status on">Active since 26.04</span>
     </div>
 
   </div>
+
+  <div class="team-section-label reveal">Previous Team Members</div>
+  <div class="team-grid">
+
+    <div class="team-card reveal">
+      <div class="team-av" style="background:linear-gradient(135deg,#4F46E5,#818CF8)">AC</div>
+      <h4>Allan Carvalho</h4>
+      <div class="role">Designed release artwork up to 22.04 and the project logo</div>
+      <span class="status alumni">Alumni</span>
+    </div>
+
+        <div class="team-card reveal">
+      <div class="team-av" style="background:linear-gradient(135deg,#2EA047,#1A7F37)">MA</div>
+      <h4>Maik Adamietz</h4>
+      <div class="role">Designed release artwork up to 22.04 and the project logo</div>
+      <span class="status alumni">Alumni</span>
+    </div>
+
+    <div class="team-card reveal">
+      <div class="team-av" style="background:linear-gradient(135deg,#312E81,#4F46E5)">MQ</div>
+      <h4>Muqtadir</h4>
+      <div class="role">Designed the launcher BFB and Yaru-Unity theme in Ubuntu Unity 21.10</div>
+      <span class="status alumni">Alumni</span>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-alt">
+<section class="section" id="tags">
+  <div class="section-header reveal">
+    <h2>Tags</h2>
+    <p>Explore topics related to Ubuntu Unity and the desktop ecosystem.</p>
+  </div>
+  <div class="tags reveal">
+    <span class="tag">Unity7</span><span class="tag">Ubuntu</span><span class="tag">LTS</span>
+    <span class="tag">Compiz</span><span class="tag">GTK3</span><span class="tag">Yaru-Purple</span>
+    <span class="tag">Unity Tweak Tool</span><span class="tag">HUD</span><span class="tag">Global Menu</span>
+    <span class="tag">Launcher</span><span class="tag">Desktop Cube</span><span class="tag">Theming</span>
+    <span class="tag">Lomiri</span><span class="tag">UBports</span><span class="tag">CCSM</span>
+    <span class="tag">X11</span><span class="tag">Snap</span><span class="tag">Flatpak</span>
+    <span class="tag">Open Source</span><span class="tag">Community</span>
+  </div>
 </section>
 </div>
 
-<!-- ===== FLOATING FOOTER ===== -->
 <div style="max-width:1140px;margin:0 auto;padding:0 24px 24px">
 <div class="footer-float">
   <p>Ubuntu Unity is an official Ubuntu flavor. Ubuntu and Canonical are registered trademarks of Canonical Ltd.</p>
-  <p style="font-size:.78rem;color:var(--text-muted);margin-bottom:6px">Try clicking the purple dot in the nav bar ;)</p>
+  <p style="font-size:.78rem;color:var(--text-muted);margin-bottom:6px">Try triple-clicking the logo in the nav bar ;)</p>
   <div class="footer-links">
+    <a href="blog.html">Blog</a>
     <a href="https://gitlab.com/ubuntu-unity" target="_blank" rel="noopener">GitLab</a>
     <a href="https://launchpad.net/ubuntu/+source/ubuntu-unity-meta" target="_blank" rel="noopener">Launchpad</a>
     <a href="#download">Downloads</a>
@@ -769,232 +504,6 @@ code{background:var(--code-bg);padding:2px 8px;border-radius:4px;font-size:.85re
 <!-- ===== TOAST ===== -->
 <div class="toast" id="toast"></div>
 
-<script>
-(function(){
-  'use strict';
-
-  /* ===== THEME ===== */
-  var html=document.documentElement,toggle=document.getElementById('themeToggle');
-  function getTheme(){var s=localStorage.getItem('uu-theme');return s||(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light')}
-  function setTheme(t){
-    html.setAttribute('data-theme',t);localStorage.setItem('uu-theme',t);
-    toggle.innerHTML=t==='dark'?'&#9788;':'&#9790;';
-  }
-  setTheme(getTheme());
-  toggle.addEventListener('click',function(){setTheme(html.getAttribute('data-theme')==='dark'?'light':'dark')});
-
-  /* ===== MOBILE MENU ===== */
-  var mobMenu=document.getElementById('mobMenu');
-  document.getElementById('mobileBtn').addEventListener('click',function(){mobMenu.classList.toggle('open')});
-  window.closeMob=function(){mobMenu.classList.remove('open')};
-
-  /* ===== TYPING EFFECT ===== */
-  var phrases=['Reborn.','Unbroken.','Timeless.','Yours.','Purple.','Legendary.'],phraseIdx=0,charIdx=0,isDeleting=false;
-  var typedEl=document.getElementById('typedText');
-  function typeLoop(){
-    var current=phrases[phraseIdx];
-    if(!isDeleting){
-      typedEl.textContent=current.substring(0,charIdx+1);
-      charIdx++;
-      if(charIdx===current.length){isDeleting=true;setTimeout(typeLoop,2200);return}
-      setTimeout(typeLoop,90);
-    }else{
-      typedEl.textContent=current.substring(0,charIdx-1);
-      charIdx--;
-      if(charIdx===0){isDeleting=false;phraseIdx=(phraseIdx+1)%phrases.length;setTimeout(typeLoop,400);return}
-      setTimeout(typeLoop,50);
-    }
-  }
-  typeLoop();
-
-  /* ===== FAQ ===== */
-  document.querySelectorAll('.faq-q').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      var item=btn.parentElement,open=item.classList.contains('open');
-      document.querySelectorAll('.faq-item.open').forEach(function(el){el.classList.remove('open');el.querySelector('.faq-q').setAttribute('aria-expanded','false')});
-      if(!open){item.classList.add('open');btn.setAttribute('aria-expanded','true')}
-    });
-  });
-
-  /* ===== SCROLL REVEAL ===== */
-  var reveals=document.querySelectorAll('.reveal');
-  if('IntersectionObserver' in window){
-    var obs=new IntersectionObserver(function(entries){
-      entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}});
-    },{threshold:0.06,rootMargin:'0px 0px -30px 0px'});
-    reveals.forEach(function(el){obs.observe(el)});
-  }else{reveals.forEach(function(el){el.classList.add('vis')})}
-
-  /* ===== ANIMATED COUNTERS ===== */
-  var counted=false;
-  function animateCounters(){
-    if(counted)return;
-    var statEls=document.querySelectorAll('.stat-num[data-count]');
-    if(statEls.length===0)return;
-    var firstStat=statEls[0];
-    var rect=firstStat.getBoundingClientRect();
-    if(rect.top>window.innerHeight)return;
-    counted=true;
-    statEls.forEach(function(el){
-      var target=parseInt(el.getAttribute('data-count'));
-      var duration=1200;
-      var start=0;
-      var startTime=null;
-      function step(ts){
-        if(!startTime)startTime=ts;
-        var progress=Math.min((ts-startTime)/duration,1);
-        var eased=1-Math.pow(1-progress,3);
-        el.textContent=Math.floor(eased*target);
-        if(progress<1)requestAnimationFrame(step);
-        else el.textContent=target;
-      }
-      requestAnimationFrame(step);
-    });
-  }
-  window.addEventListener('scroll',animateCounters,{passive:true});
-  animateCounters();
-
-  /* ===== BACK TO TOP ===== */
-  var btt=document.getElementById('btt');
-  window.addEventListener('scroll',function(){
-    btt.classList.toggle('show',window.scrollY>500);
-    document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50);
-  },{passive:true});
-  btt.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
-
-  /* ===== NAV SCROLL SHADOW ===== */
-  var navLinks=document.querySelectorAll('.nav-links a');
-  var sections=document.querySelectorAll('section[id]');
-  if('IntersectionObserver' in window){
-    var navObs=new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting){
-          navLinks.forEach(function(l){l.classList.remove('active')});
-          var a=document.querySelector('.nav-links a[href="#'+e.target.id+'"]');
-          if(a)a.classList.add('active');
-        }
-      });
-    },{threshold:0.2,rootMargin:'-60px 0px -50% 0px'});
-    sections.forEach(function(s){navObs.observe(s)});
-  }
-
-  /* ===== RESPONSIVE TIMELINE ===== */
-  function checkLayout(){
-    var g=document.getElementById('aboutGrid');
-    if(g){g.style.gridTemplateColumns=window.innerWidth<768?'1fr':'1fr 1fr'}
-  }
-  checkLayout();
-  window.addEventListener('resize',checkLayout);
-
-  /* ===== FUN: CONFETTI ===== */
-  var confettiCanvas=document.getElementById('confettiCanvas');
-  var cCtx=confettiCanvas.getContext('2d');
-  var confettiPieces=[];
-  var confettiRunning=false;
-  function resizeConfetti(){confettiCanvas.width=window.innerWidth;confettiCanvas.height=window.innerHeight}
-  resizeConfetti();
-  window.addEventListener('resize',resizeConfetti);
-
-  function launchConfetti(){
-    confettiPieces=[];
-    var colors=['#77216F','#9242C4','#AD5EBF','#E95420','#2EA047','#fff'];
-    for(var i=0;i<120;i++){
-      confettiPieces.push({
-        x:window.innerWidth/2+((Math.random()-.5)*200),
-        y:window.innerHeight/2,
-        vx:(Math.random()-.5)*16,
-        vy:Math.random()*-18-4,
-        size:Math.random()*6+3,
-        color:colors[Math.floor(Math.random()*colors.length)],
-        rotation:Math.random()*360,
-        rotSpeed:(Math.random()-.5)*10,
-        gravity:.3,
-        opacity:1
-      });
-    }
-    if(!confettiRunning){confettiRunning=true;animateConfetti()}
-  }
-
-  function animateConfetti(){
-    cCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
-    var alive=false;
-    for(var i=0;i<confettiPieces.length;i++){
-      var p=confettiPieces[i];
-      p.x+=p.vx;p.vy+=p.gravity;p.y+=p.vy;
-      p.rotation+=p.rotSpeed;p.opacity-=.005;
-      if(p.opacity<=0||p.y>confettiCanvas.height+20)continue;
-      alive=true;
-      cCtx.save();cCtx.translate(p.x,p.y);cCtx.rotate(p.rotation*Math.PI/180);
-      cCtx.globalAlpha=Math.max(0,p.opacity);
-      cCtx.fillStyle=p.color;
-      cCtx.fillRect(-p.size/2,-p.size/2,p.size,p.size);
-      cCtx.restore();
-    }
-    if(alive)requestAnimationFrame(animateConfetti);
-    else{confettiRunning=false;cCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height)}
-  }
-
-  /* ===== FUN: PURPLE DOT EASTER EGG ===== */
-  var clickCount=0,lastClickTime=0;
-  document.getElementById('navBrand').addEventListener('click',function(e){
-    e.preventDefault();
-    var now=Date.now();
-    if(now-lastClickTime>800)clickCount=0;
-    clickCount++;lastClickTime=now;
-    if(clickCount===3){
-      launchConfetti();
-      showToast('You found the Ubuntu Unity easter egg! The Unity of Friends sends its regards.');
-      clickCount=0;
-    }else if(clickCount===1){
-      window.scrollTo({top:0,behavior:'smooth'});
-    }
-  });
-
-  /* ===== FUN: SPARKLE ON PURPLE ELEMENTS ===== */
-  var prefersReduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!prefersReduced){
-    document.addEventListener('click',function(e){
-      if(e.target.closest('.btn-purple,.nav-brand-dot,.team-av,.tip-n')){
-        for(var i=0;i<6;i++){
-          var sp=document.createElement('div');
-          sp.className='sparkle';
-          sp.style.left=(e.clientX+((Math.random()-.5)*40))+'px';
-          sp.style.top=(e.clientY+((Math.random()-.5)*40))+'px';
-          sp.style.background=Math.random()>.5?'var(--purple)':'var(--purple-light)';
-          sp.style.width=sp.style.height=(Math.random()*5+3)+'px';
-          document.body.appendChild(sp);
-          setTimeout(function(el){el.remove()},700,sp);
-        }
-      }
-    });
-  }
-
-  /* ===== FUN: TOAST ===== */
-  var toastTimeout;
-  function showToast(msg){
-    var t=document.getElementById('toast');
-    t.textContent=msg;t.classList.add('show');
-    clearTimeout(toastTimeout);
-    toastTimeout=setTimeout(function(){t.classList.remove('show')},4000);
-  }
-
-  /* ===== FUN: KONAMI CODE ===== */
-  var konamiSeq=[38,38,40,40,37,39,37,39,66,65],konamiIdx=0;
-  document.addEventListener('keydown',function(e){
-    if(e.keyCode===konamiSeq[konamiIdx]){konamiIdx++;if(konamiIdx===konamiSeq.length){launchConfetti();showToast('Konami code activated! Wobbly windows would be proud.');konamiIdx=0}}else{konamiIdx=0}
-  });
-
-  /* ===== FUN: TAG CLICK ===== */
-  document.querySelectorAll('.tag').forEach(function(tag){
-    tag.addEventListener('click',function(){
-      showToast('You clicked "'+tag.textContent+'" — that\'s a great topic!');
-      tag.style.transform='translateY(-2px) scale(1.15)';
-      setTimeout(function(){tag.style.transform=''},300);
-    });
-  });
-
-})();
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
